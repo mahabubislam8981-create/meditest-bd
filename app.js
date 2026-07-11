@@ -47,9 +47,9 @@ function showTests(data) {
         <h2>${test.name}</h2>
 
         <p>
-          <strong>বিভাগ:</strong>
-          ${test.category}
-        </p>
+  <strong>বিভাগ:</strong>
+  ${test.category || "তথ্য নেই"}
+</p>
 
         <div class="price">
           ৳${test.price}
