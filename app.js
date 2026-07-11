@@ -38,6 +38,9 @@ function showTests(data) {
         <p><strong>বিভাগ:</strong> ${test.category ? test.category : "তথ্য নেই"}</p>
         <div class="price">৳${test.price || ""}</div>
       </div>
+      <button class="details-btn">
+  বিস্তারিত দেখুন
+</button>
     `;
   });
 }
