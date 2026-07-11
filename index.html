@@ -1,1 +1,40 @@
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>MediTest BD</title>
 
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<header>
+  <h1>🩺 MediTest BD</h1>
+  <p>বাংলাদেশের মেডিক্যাল টেস্ট তথ্যভাণ্ডার</p>
+</header>
+
+<main>
+
+  <section class="search-box">
+    <input type="text" id="searchInput" placeholder="টেস্টের নাম লিখুন...">
+  </section>
+
+  <section id="testList">
+    <!-- Firebase থেকে টেস্টগুলো এখানে দেখাবে -->
+  </section>
+
+</main>
+
+<footer>
+  <p>© 2026 MediTest BD</p>
+</footer>
+
+<!-- Firebase -->
+<script type="module" src="firebase.js"></script>
+
+<!-- Main App -->
+<script type="module" src="app.js"></script>
+
+</body>
+</html>
