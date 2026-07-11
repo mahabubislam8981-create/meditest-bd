@@ -35,7 +35,7 @@ function showTests(data) {
     testList.innerHTML += `
       <div class="card">
         <h2>${test.name || ""}</h2>
-        <p><strong>বিভাগ:</strong> ${test.category || ""}</p>
+        <p><strong>বিভাগ:</strong> ${test.category ? test.category : "তথ্য নেই"}</p>
         <div class="price">৳${test.price || ""}</div>
       </div>
     `;
