@@ -65,11 +65,11 @@ function showTests(data) {
           ৳${test.price}
         </div>
 
-        <button
-          class="details-btn"
-          data-name="${test.name}">
-          বিস্তারিত দেখুন
-        </button>
+        <a href="test.html?name=${encodeURIComponent(test.name)}">
+    <button class="details-btn">
+        বিস্তারিত দেখুন
+    </button>
+</a>
 
       </div>
     `;
