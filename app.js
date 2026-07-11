@@ -13,7 +13,9 @@ const modalTitle = document.getElementById("modalTitle");
 const modalCategory = document.getElementById("modalCategory");
 const modalPrice = document.getElementById("modalPrice");
 const modalDescription = document.getElementById("modalDescription");
-
+const modalSample = document.getElementById("modalSample");
+const modalPreparation = document.getElementById("modalPreparation");
+const modalReportTime = document.getElementById("modalReportTime");
 let tests = [];
 
 // Firestore থেকে ডাটা লোড
