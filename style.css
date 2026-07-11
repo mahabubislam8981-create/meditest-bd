@@ -79,3 +79,25 @@ footer{
     padding:25px;
     color:#666;
 }
+.navbar{
+    display:flex;
+    justify-content:center;
+    gap:15px;
+    flex-wrap:wrap;
+    background:#ffffff;
+    padding:12px;
+    box-shadow:0 2px 8px rgba(0,0,0,.08);
+}
+
+.navbar a{
+    text-decoration:none;
+    color:#0F62FE;
+    font-weight:bold;
+    padding:8px 12px;
+    border-radius:8px;
+}
+
+.navbar a:hover{
+    background:#0F62FE;
+    color:#fff;
+}
