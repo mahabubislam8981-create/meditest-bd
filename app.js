@@ -3,7 +3,13 @@ import { collection, getDocs } from "https://www.gstatic.com/firebasejs/12.0.0/f
 
 const testList = document.getElementById("testList");
 const searchInput = document.getElementById("searchInput");
+const modal = document.getElementById("detailsModal");
+const closeModal = document.getElementById("closeModal");
 
+const modalTitle = document.getElementById("modalTitle");
+const modalCategory = document.getElementById("modalCategory");
+const modalPrice = document.getElementById("modalPrice");
+const modalDescription = document.getElementById("modalDescription");
 let tests = [];
 
 async function loadTests() {
