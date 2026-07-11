@@ -14,67 +14,67 @@ async function loadTests() {
   testList.innerHTML = "<p>লোড হচ্ছে...</p>";
 
   try {
-    const querySnapshot = await getDocs(collection(db, "tests"));
+    const snapshot = await getDocs(collection(db, "tests"));
 
     tests = [];
 
-    querySnapshot.forEach((doc) => {
+    snapshot.forEach((doc) => {
       tests.push(doc.data());
     });
 
-    showTests(tests);
+    displayTests(tests);
 
-  } catch (err) {
+  } catch (error) {
+    console.error(error);
     testList.innerHTML = "<p>ডাটা লোড করা যায়নি।</p>";
-    console.error(err);
   }
 }
 
 // কার্ড দেখানো
-function showTests(data) {
+function displayTests(data) {
+
+  testList.innerHTML = "";
 
   if (data.length === 0) {
     testList.innerHTML = "<p>কোন টেস্ট পাওয়া যায়নি।</p>";
     return;
   }
 
-  testList.innerHTML = "";
-
-  data.forEach(test => {
+  data.forEach((test) => {
 
     testList.innerHTML += `
       <div class="card">
-        <h2>${test.name}</h2>
+        <h2>${test.name || ""}</h2>
 
         <p>
-  <strong>বিভাগ:</strong>
-  ${test.category || "তথ্য নেই"}
-</p>
+          <strong>বিভাগ:</strong>
+          ${test.category || "তথ্য নেই"}
+        </p>
 
         <div class="price">
-          ৳${test.price}
+          ৳${test.price || 0}
         </div>
-
       </div>
     `;
 
   });
-
 }
 
 // সার্চ
-searchInput.addEventListener("input", () => {
+searchInput.addEventListener("input", function () {
 
-  const value = searchInput.value.toLowerCase();
+  const keyword = searchInput.value.trim().toLowerCase();
 
-  const filtered = tests.filter(test =>
-  test.name.toLowerCase().includes(value) ||
-  const filtered = tests.filter(test =>
-  (test.name || "").toLowerCase().includes(value) ||
-  (test.category || "").toLowerCase().includes(value)
-);
+  const filtered = tests.filter(test => {
 
-  showTests(filtered);
+    const name = (test.name || "").toLowerCase();
+    const category = (test.category || "").toLowerCase();
+
+    return name.includes(keyword) || category.includes(keyword);
+
+  });
+
+  displayTests(filtered);
 
 });
 
