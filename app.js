@@ -44,7 +44,7 @@ function showTests(data) {
         <p><strong>বিভাগ:</strong> ${test.category ? test.category : "তথ্য নেই"}</p>
         <div class="price">৳${test.price || ""}</div>
       </div>
-      <button class="details-btn">
+      <<button class="details-btn" data-index="${tests.indexOf(test)}">
   বিস্তারিত দেখুন
 </button>
     `;
@@ -63,5 +63,32 @@ searchInput.addEventListener("input", () => {
 
   showTests(filtered);
 });
+document.querySelectorAll(".details-btn").forEach(btn => {
+
+  btn.addEventListener("click", () => {
+
+    const test = tests[btn.dataset.index];
+
+    modalTitle.textContent = test.name;
+    modalCategory.textContent = test.category || "তথ্য নেই";
+    modalPrice.textContent = test.price;
+
+    modalDescription.textContent =
+      test.description || "এই টেস্টের বিস্তারিত তথ্য এখনও যোগ করা হয়নি।";
+
+    modal.style.display = "block";
+
+  });
+
+});
 
 loadTests();
+closeModal.onclick = () => {
+  modal.style.display = "none";
+};
+
+window.onclick = (e) => {
+  if (e.target === modal) {
+    modal.style.display = "none";
+  }
+};
