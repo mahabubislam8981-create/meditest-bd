@@ -48,7 +48,7 @@ function displayTests(data) {
 
         <p>
           <strong>বিভাগ:</strong>
-          ${test.category || "তথ্য নেই"}
+          ${JSON.stringify(test)}
         </p>
 
         <div class="price">
