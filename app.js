@@ -92,7 +92,13 @@ function showTests(data) {
       modalPrice.textContent = test.price;
       modalDescription.textContent =
         test.description || "এই টেস্টের বিস্তারিত তথ্য এখনও যোগ করা হয়নি।";
+      modalSample.textContent = test.sample || "তথ্য নেই";
 
+modalPreparation.textContent =
+test.preparation || "তথ্য নেই";
+
+modalReportTime.textContent =
+test.reportTime || "তথ্য নেই";
       modal.style.display = "block";
 
     });
