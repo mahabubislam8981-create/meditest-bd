@@ -63,18 +63,26 @@ function displayTests(data) {
 // সার্চ
 searchInput.addEventListener("input", function () {
 
-  const keyword = searchInput.value.trim().toLowerCase();
+  // সার্চ
+searchInput.addEventListener("input", () => {
+
+  const value = searchInput.value.trim().toLowerCase();
 
   const filtered = tests.filter(test => {
 
     const name = (test.name || "").toLowerCase();
     const category = (test.category || "").toLowerCase();
 
-    return name.includes(keyword) || category.includes(keyword);
+    return (
+      name.includes(value) ||
+      category.includes(value)
+    );
 
   });
 
-  displayTests(filtered);
+  showTests(filtered);
+
+});
 
 });
 
