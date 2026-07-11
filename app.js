@@ -68,8 +68,9 @@ searchInput.addEventListener("input", () => {
   const value = searchInput.value.toLowerCase();
 
   const filtered = tests.filter(test =>
-    test.name.toLowerCase().includes(value)
-  );
+  test.name.toLowerCase().includes(value) ||
+  test.category.toLowerCase().includes(value)
+);
 
   showTests(filtered);
 
