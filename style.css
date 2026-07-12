@@ -146,3 +146,42 @@ header h1{
 }
 
 }
+/* ===== Footer ===== */
+
+footer{
+    background:#0F62FE;
+    color:white;
+    margin-top:40px;
+    padding:30px 20px;
+    text-align:center;
+}
+
+.footer-links{
+    margin-bottom:20px;
+}
+
+.footer-links a{
+    color:white;
+    text-decoration:none;
+    margin:0 10px;
+    display:inline-block;
+    padding:5px;
+}
+
+.footer-links a:hover{
+    text-decoration:underline;
+}
+
+.footer-text{
+    font-size:14px;
+    opacity:.9;
+}
+
+@media(max-width:768px){
+
+.footer-links a{
+    display:block;
+    margin:8px 0;
+}
+
+}
