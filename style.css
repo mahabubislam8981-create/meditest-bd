@@ -100,4 +100,49 @@ main{
     color:green;
     font-size:24px;
     font-weight:bold;
-    margin-top
+    margin-top:10px;
+}
+
+.details-btn{
+    margin-top:15px;
+    background:#0F62FE;
+    color:white;
+    border:none;
+    padding:12px 20px;
+    border-radius:8px;
+    cursor:pointer;
+    font-size:15px;
+    width:100%;
+}
+
+.details-btn:hover{
+    background:#0043ce;
+}
+
+footer{
+    text-align:center;
+    padding:20px;
+    color:#777;
+}
+
+@media(max-width:768px){
+
+header h1{
+    font-size:26px;
+}
+
+.logo{
+    width:70px;
+    height:70px;
+    font-size:35px;
+}
+
+.navbar{
+    gap:8px;
+}
+
+.navbar a{
+    font-size:14px;
+}
+
+}
