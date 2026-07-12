@@ -1,66 +1,79 @@
 <!DOCTYPE html>
 <html lang="bn">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>MediTest BD</title>
 
-  <link rel="stylesheet" href="style.css">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>MediTest BD | বাংলাদেশের মেডিক্যাল টেস্ট তথ্যভান্ডার</title>
+
+<meta name="description" content="বাংলাদেশের সকল মেডিক্যাল টেস্টের মূল্য, বিভাগ ও বিস্তারিত তথ্য">
+
+<link rel="stylesheet" href="style.css">
+
 </head>
+
 <body>
 
 <header>
-  <h1>🩺 MediTest BD</h1>
-  <p>বাংলাদেশের মেডিক্যাল টেস্ট তথ্যভাণ্ডার</p>
+
+<div class="logo">
+🩺
+</div>
+
+<h1>MediTest BD</h1>
+
+<p>
+বাংলাদেশের সকল মেডিক্যাল টেস্টের তথ্য ও মূল্য
+</p>
+
+<div class="search-box">
+
+<input
+type="text"
+id="searchInput"
+placeholder="🔍 টেস্টের নাম বা বিভাগ লিখুন...">
+
+</div>
+
 </header>
+
 <nav class="navbar">
-  <a href="index.html">🏠 Home</a>
-  <a href="#">📂 Categories</a>
-  <a href="about.html">ℹ️ About</a>
-  <a href="contact.html">📞 Contact</a>
+
+<a href="index.html">🏠 Home</a>
+
+<a href="#">📂 Categories</a>
+
+<a href="about.html">ℹ️ About</a>
+
+<a href="contact.html">📞 Contact</a>
+
 </nav>
+
 <main>
 
-  <section class="search-box">
-    <input type="text" id="searchInput" placeholder="টেস্টের নাম লিখুন...">
-  </section>
+<section id="testList">
 
-  <section id="testList">
-    <!-- Firebase থেকে টেস্টগুলো এখানে দেখাবে -->
-  </section>
+<p>লোড হচ্ছে...</p>
+
+</section>
 
 </main>
-<div id="detailsModal" class="modal">
-  <div class="modal-content">
-    <span id="closeModal">&times;</span>
 
-    <h2 id="modalTitle"></h2>
-
-    <p><strong>বিভাগ:</strong> <span id="modalCategory"></span></p>
-
-    <p><strong>মূল্য:</strong> ৳<span id="modalPrice"></span></p>
-
-    <p id="modalDescription">
-      <hr>
-
-<p><strong>নমুনা:</strong> <span id="modalSample"></span></p>
-
-<p><strong>প্রস্তুতি:</strong> <span id="modalPreparation"></span></p>
-
-<p><strong>রিপোর্ট পাওয়ার সময়:</strong> <span id="modalReportTime"></span></p>
-    </p>
-
-  </div>
-</div>
 <footer>
-  <p>© 2026 MediTest BD</p>
+
+<p>
+
+© 2026 MediTest BD
+
+</p>
+
 </footer>
 
-<!-- Firebase -->
 <script type="module" src="firebase.js"></script>
 
-<!-- Main App -->
 <script type="module" src="app.js"></script>
 
 </body>
+
 </html>
