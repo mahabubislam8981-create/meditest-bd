@@ -4,9 +4,9 @@ import {
   getDocs
 } from "https://www.gstatic.com/firebasejs/12.0.0/firebase-firestore.js";
 
-// URL থেকে টেস্টের নাম নেওয়া
+// URL থেকে slug নেওয়া
 const params = new URLSearchParams(window.location.search);
-const testName = params.get("name");
+const slug = params.get("slug");
 
 // HTML Elements
 const name = document.getElementById("name");
@@ -17,27 +17,48 @@ const sample = document.getElementById("sample");
 const preparation = document.getElementById("preparation");
 const reportTime = document.getElementById("reportTime");
 
-// Firestore থেকে ডাটা আনা
 async function loadTest() {
-  const snapshot = await getDocs(collection(db, "tests"));
 
-  snapshot.forEach((doc) => {
+  try {
 
-    const test = doc.data();
+    const snapshot = await getDocs(collection(db, "tests"));
 
-    if (test.name === testName) {
+    let found = false;
 
-      name.textContent = test.name;
-      category.textContent = test.category || "তথ্য নেই";
-      price.textContent = test.price || "";
-      description.textContent = test.description || "তথ্য নেই";
-      sample.textContent = test.sample || "তথ্য নেই";
-      preparation.textContent = test.preparation || "তথ্য নেই";
-      reportTime.textContent = test.reportTime || "তথ্য নেই";
+    snapshot.forEach((doc) => {
 
+      const test = doc.data();
+
+      if (test.slug === slug) {
+
+        found = true;
+
+        name.textContent = test.name || "তথ্য নেই";
+        category.textContent = test.category || "তথ্য নেই";
+        price.textContent = test.price || "তথ্য নেই";
+        description.textContent = test.description || "তথ্য নেই";
+        sample.textContent = test.sample || "তথ্য নেই";
+        preparation.textContent = test.preparation || "তথ্য নেই";
+        reportTime.textContent = test.reportTime || "তথ্য নেই";
+
+      }
+
+    });
+
+    if (!found) {
+      name.textContent = "❌ টেস্ট পাওয়া যায়নি";
+      description.textContent = "এই টেস্টটি ডাটাবেজে নেই।";
     }
 
-  });
+  } catch (error) {
+
+    console.error(error);
+
+    name.textContent = "ত্রুটি";
+    description.textContent = "ডাটা লোড করা যায়নি।";
+
+  }
+
 }
 
 loadTest();
