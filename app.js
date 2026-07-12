@@ -15,7 +15,17 @@ async function loadTests() {
 
     tests = snapshot.docs.map(doc => doc.data());
 
-    renderTests(tests);
+    const params = new URLSearchParams(window.location.search);
+const selectedCategory = params.get("category");
+
+if (selectedCategory) {
+  const filtered = tests.filter(
+    test => test.category === selectedCategory
+  );
+  renderTests(filtered);
+} else {
+  renderTests(tests);
+}
 
   } catch (error) {
     console.error(error);
