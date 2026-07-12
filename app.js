@@ -1,55 +1,39 @@
 import { db } from "./firebase.js";
-import {
-  collection,
-  getDocs
-} from "https://www.gstatic.com/firebasejs/12.0.0/firebase-firestore.js";
+import { collection, getDocs } from "https://www.gstatic.com/firebasejs/12.0.0/firebase-firestore.js";
 
 const testList = document.getElementById("testList");
 const searchInput = document.getElementById("searchInput");
 
-const modal = document.getElementById("detailsModal");
-const closeModal = document.getElementById("closeModal");
-const modalTitle = document.getElementById("modalTitle");
-const modalCategory = document.getElementById("modalCategory");
-const modalPrice = document.getElementById("modalPrice");
-const modalDescription = document.getElementById("modalDescription");
-const modalSample = document.getElementById("modalSample");
-const modalPreparation = document.getElementById("modalPreparation");
-const modalReportTime = document.getElementById("modalReportTime");
 let tests = [];
 
-// Firestore থেকে ডাটা লোড
+// সব টেস্ট লোড
 async function loadTests() {
   testList.innerHTML = "<p>লোড হচ্ছে...</p>";
 
   try {
     const snapshot = await getDocs(collection(db, "tests"));
 
-    tests = [];
+    tests = snapshot.docs.map(doc => doc.data());
 
-    snapshot.forEach((doc) => {
-      tests.push(doc.data());
-    });
+    renderTests(tests);
 
-    showTests(tests);
-
-  } catch (err) {
-    console.error(err);
+  } catch (error) {
+    console.error(error);
     testList.innerHTML = "<p>ডাটা লোড করা যায়নি।</p>";
   }
 }
 
-// কার্ড দেখানো
-function showTests(data) {
+// টেস্ট কার্ড দেখানো
+function renderTests(data) {
 
   if (data.length === 0) {
-    testList.innerHTML = "<p>কোন তথ্য পাওয়া যায়নি।</p>";
+    testList.innerHTML = "<p>কোনো তথ্য পাওয়া যায়নি।</p>";
     return;
   }
 
   testList.innerHTML = "";
 
-  data.forEach((test) => {
+  data.forEach(test => {
 
     testList.innerHTML += `
       <div class="card">
@@ -66,42 +50,13 @@ function showTests(data) {
         </div>
 
         <a href="test.html?slug=${test.slug}">
-  <button class="details-btn">
-    বিস্তারিত দেখুন
-  </button>
-</a>
+          <button class="details-btn">
+            বিস্তারিত দেখুন
+          </button>
+        </a>
 
       </div>
     `;
-
-  });
-
-  // বাটনের ইভেন্ট
-  document.querySelectorAll(".details-btn").forEach(btn => {
-
-    btn.addEventListener("click", () => {
-
-      const test = tests.find(
-        t => t.name === btn.dataset.name
-      );
-
-      if (!test) return;
-
-      modalTitle.textContent = test.name;
-      modalCategory.textContent = test.category || "তথ্য নেই";
-      modalPrice.textContent = test.price;
-      modalDescription.textContent =
-        test.description || "এই টেস্টের বিস্তারিত তথ্য এখনও যোগ করা হয়নি।";
-      modalSample.textContent = test.sample || "তথ্য নেই";
-
-modalPreparation.textContent =
-test.preparation || "তথ্য নেই";
-
-modalReportTime.textContent =
-test.reportTime || "তথ্য নেই";
-      modal.style.display = "block";
-
-    });
 
   });
 
@@ -112,7 +67,7 @@ searchInput.addEventListener("input", () => {
 
   const keyword = searchInput.value.trim().toLowerCase();
 
-  const filtered = tests.filter((test) => {
+  const filtered = tests.filter(test => {
 
     const name = (test.name || "").toLowerCase();
     const category = (test.category || "").toLowerCase();
@@ -124,20 +79,8 @@ searchInput.addEventListener("input", () => {
 
   });
 
-  showTests(filtered);
+  renderTests(filtered);
 
 });
 
-// Popup বন্ধ
-closeModal.onclick = () => {
-  modal.style.display = "none";
-};
-
-window.onclick = (e) => {
-  if (e.target === modal) {
-    modal.style.display = "none";
-  }
-};
-
-// শুরু
 loadTests();
