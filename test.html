@@ -4,50 +4,79 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>MediTest BD | Test Details</title>
+<title>Test Details | MediTest BD</title>
+
+<meta name="description" content="বাংলাদেশের মেডিক্যাল টেস্টের বিস্তারিত তথ্য">
 
 <link rel="stylesheet" href="style.css">
+
 </head>
 
 <body>
 
 <header>
 
-<h1>🩺 MediTest BD</h1>
+<div class="logo">🩺</div>
 
-<p>মেডিক্যাল টেস্টের বিস্তারিত তথ্য</p>
+<h1>MediTest BD</h1>
+
+<p>মেডিক্যাল টেস্টের সম্পূর্ণ তথ্য</p>
 
 </header>
+
+<main>
 
 <div class="card">
 
 <h2 id="name">লোড হচ্ছে...</h2>
 
-<p><strong>বিভাগ:</strong> <span id="category"></span></p>
+<p><strong>📂 বিভাগ:</strong> <span id="category"></span></p>
 
-<p><strong>মূল্য:</strong> ৳<span id="price"></span></p>
+<p class="price">
+৳<span id="price"></span>
+</p>
 
 <hr>
 
-<h3>বিস্তারিত</h3>
+<h3>📝 টেস্টের বিবরণ</h3>
 
 <p id="description"></p>
 
-<p><strong>নমুনা:</strong> <span id="sample"></span></p>
+<hr>
 
-<p><strong>প্রস্তুতি:</strong> <span id="preparation"></span></p>
+<h3>📋 প্রয়োজনীয় তথ্য</h3>
 
-<p><strong>রিপোর্ট:</strong> <span id="reportTime"></span></p>
+<p><strong>🩸 নমুনা:</strong> <span id="sample"></span></p>
 
-<br>
+<p><strong>⏱ রিপোর্ট:</strong> <span id="reportTime"></span></p>
+
+<p><strong>✅ প্রস্তুতি:</strong> <span id="preparation"></span></p>
+
+<hr>
+
+<div style="text-align:center;">
 
 <a href="index.html">
+
 <button class="details-btn">
-← হোমে ফিরে যান
+
+🏠 হোমে ফিরে যান
+
 </button>
+
 </a>
 
 </div>
+
+</div>
+
+</main>
+
+<footer>
+
+<p>© 2026 MediTest BD</p>
+
+</footer>
 
 <script type="module" src="firebase.js"></script>
 
