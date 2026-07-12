@@ -69,15 +69,17 @@ searchInput.addEventListener("input", () => {
 
   const filtered = tests.filter(test => {
 
-    const name = (test.name || "").toLowerCase();
-    const category = (test.category || "").toLowerCase();
+  const name = (test.name || "").toLowerCase();
+  const category = (test.category || "").toLowerCase();
+  const keywords = (test.keywords || "").toLowerCase();
 
-    return (
-      name.includes(keyword) ||
-      category.includes(keyword)
-    );
+  return (
+    name.includes(keyword) ||
+    category.includes(keyword) ||
+    keywords.includes(keyword)
+  );
 
-  });
+});
 
   renderTests(filtered);
 
