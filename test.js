@@ -16,14 +16,9 @@ const description = document.getElementById("description");
 const sample = document.getElementById("sample");
 const preparation = document.getElementById("preparation");
 const reportTime = document.getElementById("reportTime");
-document.getElementById("purpose").textContent =
-test.purpose || "তথ্য নেই";
-
-document.getElementById("normalRange").textContent =
-test.normalRange || "তথ্য নেই";
-
-document.getElementById("note").textContent =
-test.note || "তথ্য নেই";
+const purpose = document.getElementById("purpose");
+const normalRange = document.getElementById("normalRange");
+const note = document.getElementById("note");
 
 async function loadTest() {
 
@@ -48,14 +43,27 @@ async function loadTest() {
         sample.textContent = test.sample || "তথ্য নেই";
         preparation.textContent = test.preparation || "তথ্য নেই";
         reportTime.textContent = test.reportTime || "তথ্য নেই";
+        purpose.textContent = test.purpose || "তথ্য নেই";
+        normalRange.textContent = test.normalRange || "তথ্য নেই";
+        note.textContent = test.note || "তথ্য নেই";
 
       }
 
     });
 
     if (!found) {
+
       name.textContent = "❌ টেস্ট পাওয়া যায়নি";
+      category.textContent = "-";
+      price.textContent = "-";
       description.textContent = "এই টেস্টটি ডাটাবেজে নেই।";
+      sample.textContent = "-";
+      preparation.textContent = "-";
+      reportTime.textContent = "-";
+      purpose.textContent = "-";
+      normalRange.textContent = "-";
+      note.textContent = "-";
+
     }
 
   } catch (error) {
