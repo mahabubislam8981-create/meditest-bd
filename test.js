@@ -2,6 +2,8 @@ import { db } from "./firebase.js";
 import {
   collection,
   getDocs,
+  getDoc,
+  doc,
   query,
   where
 } from "https://www.gstatic.com/firebasejs/12.0.0/firebase-firestore.js";
@@ -21,6 +23,7 @@ const purpose = document.getElementById("purpose");
 const normalRange = document.getElementById("normalRange");
 const note = document.getElementById("note");
 const diagnosticPrices = document.getElementById("diagnosticPrices");
+const relatedTests = document.getElementById("relatedTests");
 
 async function loadTest() {
 
@@ -49,6 +52,7 @@ async function loadTest() {
         normalRange.textContent = test.normalRange || "তথ্য নেই";
         note.textContent = test.note || "তথ্য নেই";
         loadDiagnosticPrices(test.slug);
+        loadRelatedTests(test.relatedTests || []);
       }
 
     });
@@ -115,6 +119,44 @@ async function loadDiagnosticPrices(testSlug) {
     console.error(error);
 
     diagnosticPrices.innerHTML = "<p>মূল্য লোড করা যায়নি।</p>";
+
+  }
+async function loadRelatedTests(slugs) {
+
+  if (slugs.length === 0) {
+    relatedTests.innerHTML = "<p>কোনো Related Test নেই।</p>";
+    return;
+  }
+
+  relatedTests.innerHTML = "";
+
+  try {
+
+    const snapshot = await getDocs(collection(db, "tests"));
+
+    snapshot.forEach((docSnap) => {
+
+      const test = docSnap.data();
+
+      if (slugs.includes(test.slug)) {
+
+        relatedTests.innerHTML += `
+          <p>
+            <a href="test.html?slug=${test.slug}">
+              🔗 ${test.name}
+            </a>
+          </p>
+        `;
+
+      }
+
+    });
+
+  } catch (error) {
+
+    console.error(error);
+
+    relatedTests.innerHTML = "<p>Related Test লোড করা যায়নি।</p>";
 
   }
 
