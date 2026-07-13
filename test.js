@@ -20,6 +20,7 @@ const reportTime = document.getElementById("reportTime");
 const purpose = document.getElementById("purpose");
 const normalRange = document.getElementById("normalRange");
 const note = document.getElementById("note");
+const diagnosticPrices = document.getElementById("diagnosticPrices");
 
 async function loadTest() {
 
@@ -47,7 +48,7 @@ async function loadTest() {
         purpose.textContent = test.purpose || "তথ্য নেই";
         normalRange.textContent = test.normalRange || "তথ্য নেই";
         note.textContent = test.note || "তথ্য নেই";
-
+        loadDiagnosticPrices(test.slug);
       }
 
     });
@@ -77,5 +78,45 @@ async function loadTest() {
   }
 
 }
+async function loadDiagnosticPrices(testSlug) {
 
+  try {
+
+    const q = query(
+      collection(db, "diagnostic_prices"),
+      where("testSlug", "==", testSlug)
+    );
+
+    const snapshot = await getDocs(q);
+
+    if (snapshot.empty) {
+      diagnosticPrices.innerHTML = "<p>এই টেস্টের কোনো মূল্য যোগ করা হয়নি।</p>";
+      return;
+    }
+
+    diagnosticPrices.innerHTML = "";
+
+    snapshot.forEach((doc) => {
+
+      const data = doc.data();
+
+      diagnosticPrices.innerHTML += `
+        <div class="card">
+          <strong>🏥 ${data.center}</strong><br>
+          📍 ${data.city}<br>
+          <span class="price">৳${data.price}</span>
+        </div>
+      `;
+
+    });
+
+  } catch (error) {
+
+    console.error(error);
+
+    diagnosticPrices.innerHTML = "<p>মূল্য লোড করা যায়নি।</p>";
+
+  }
+
+}
 loadTest();
