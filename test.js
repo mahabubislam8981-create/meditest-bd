@@ -1,9 +1,10 @@
 import { db } from "./firebase.js";
 import {
   collection,
-  getDocs
+  getDocs,
+  query,
+  where
 } from "https://www.gstatic.com/firebasejs/12.0.0/firebase-firestore.js";
-
 // URL থেকে slug নেওয়া
 const params = new URLSearchParams(window.location.search);
 const slug = params.get("slug");
