@@ -16,6 +16,14 @@ const description = document.getElementById("description");
 const sample = document.getElementById("sample");
 const preparation = document.getElementById("preparation");
 const reportTime = document.getElementById("reportTime");
+document.getElementById("purpose").textContent =
+test.purpose || "তথ্য নেই";
+
+document.getElementById("normalRange").textContent =
+test.normalRange || "তথ্য নেই";
+
+document.getElementById("note").textContent =
+test.note || "তথ্য নেই";
 
 async function loadTest() {
 
