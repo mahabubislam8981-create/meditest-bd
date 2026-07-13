@@ -159,6 +159,6 @@ async function loadRelatedTests(slugs) {
     relatedTests.innerHTML = "<p>Related Test লোড করা যায়নি।</p>";
 
   }
-
+}
 }
 loadTest();
