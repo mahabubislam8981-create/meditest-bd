@@ -79,17 +79,21 @@ searchInput.addEventListener("input", () => {
 
   const filtered = tests.filter(test => {
 
-  const name = (test.name || "").toLowerCase();
-  const category = (test.category || "").toLowerCase();
-  const keywords = (test.keywords || "").toLowerCase();
+    const name = (test.name || "").toLowerCase();
+    const category = (test.category || "").toLowerCase();
+    const keywords = (test.keywords || "").toLowerCase();
+    const description = (test.description || "").toLowerCase();
+    const purpose = (test.purpose || "").toLowerCase();
 
-  return (
-    name.includes(keyword) ||
-    category.includes(keyword) ||
-    keywords.includes(keyword)
-  );
+    return (
+      name.includes(keyword) ||
+      category.includes(keyword) ||
+      keywords.includes(keyword) ||
+      description.includes(keyword) ||
+      purpose.includes(keyword)
+    );
 
-});
+  });
 
   renderTests(filtered);
 
