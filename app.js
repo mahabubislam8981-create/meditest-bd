@@ -118,6 +118,7 @@ searchInput.addEventListener("input", () => {
   });
 
   renderTests(filtered);
+  renderPopularTests();
 
 });
 
