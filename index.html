@@ -33,22 +33,51 @@
 <input
 type="text"
 id="searchInput"
-placeholder="🔍 টেস্টের নাম বা বিভাগ লিখুন...">
+<!DOCTYPE html>
+<html lang="bn">
+
+<head>
+
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <title>MediTest BD | বাংলাদেশের মেডিক্যাল টেস্ট তথ্যভাণ্ডার</title>
+
+  <meta name="description"
+    content="বাংলাদেশের সকল মেডিক্যাল টেস্টের মূল্য, বিভাগ ও বিস্তারিত তথ্য">
+
+  <link rel="stylesheet" href="style.css">
+  <link rel="icon" type="image/svg+xml" href="favicon.svg">
+
+</head>
+
+<body>
+
+<header>
+
+<div class="logo">
+🩺
+</div>
+
+<h1>MediTest BD</h1>
+
+<p>
+বাংলাদেশের সকল মেডিক্যাল টেস্টের তথ্য, মূল্য ও ডায়াগনস্টিক সেন্টার
+</p>
+
+<div class="search-box">
+
+<input
+type="text"
+id="searchInput"
+placeholder="🔍 টেস্টের নাম, রোগ বা বিভাগ লিখুন...">
+
+<div id="searchSuggestions" class="search-suggestions">
 
 </div>
 
-  <section class="card">
-
-<h2>🔥 জনপ্রিয় টেস্ট</h2>
-
-<div id="popularTests">
-
-<p>লোড হচ্ছে...</p>
-
 </div>
 
-</section>
-  
 </header>
 
 <nav class="navbar">
@@ -64,6 +93,18 @@ placeholder="🔍 টেস্টের নাম বা বিভাগ লি�
 </nav>
 
 <main>
+
+<section class="card">
+
+<h2>🔥 জনপ্রিয় টেস্ট</h2>
+
+<div id="popularTests">
+
+<p>লোড হচ্ছে...</p>
+
+</div>
+
+</section>
 
 <section id="testList">
 
@@ -106,7 +147,6 @@ placeholder="🔍 টেস্টের নাম বা বিভাগ লি�
 </footer>
 
 <script type="module" src="firebase.js"></script>
-
 <script type="module" src="app.js"></script>
 
 </body>
