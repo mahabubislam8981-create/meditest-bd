@@ -2,6 +2,7 @@ import { db } from "./firebase.js";
 import { collection, getDocs } from "https://www.gstatic.com/firebasejs/12.0.0/firebase-firestore.js";
 
 const testList = document.getElementById("testList");
+const popularTests = document.getElementById("popularTests");
 const searchInput = document.getElementById("searchInput");
 
 let tests = [];
