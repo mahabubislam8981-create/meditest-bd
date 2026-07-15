@@ -43,11 +43,7 @@ return;
 
 }
 
-doctorList.innerHTML="";
-
-data.forEach(item=>{
-
-doctorList.innerHTML+=`
+doctorList.innerHTML += `
 
 <div class="card">
 
@@ -60,6 +56,12 @@ doctorList.innerHTML+=`
 <p><strong>🤒 লক্ষণ:</strong> ${item.symptoms}</p>
 
 <p>${item.description}</p>
+
+<a href="doctor-details.html?slug=${item.slug}">
+  <button class="details-btn">
+    বিস্তারিত দেখুন
+  </button>
+</a>
 
 </div>
 
