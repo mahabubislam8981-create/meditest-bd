@@ -1,7 +1,7 @@
 import { db } from "./firebase.js";
 import {
-collection,
-getDocs
+  collection,
+  getDocs
 } from "https://www.gstatic.com/firebasejs/12.0.0/firebase-firestore.js";
 
 const doctorList = document.getElementById("doctorList");
@@ -9,91 +9,92 @@ const searchInput = document.getElementById("searchInput");
 
 let doctors = [];
 
+// সব Doctor Guide লোড
 async function loadDoctors() {
 
-doctorList.innerHTML = "<p>লোড হচ্ছে...</p>";
+  doctorList.innerHTML = "<p>লোড হচ্ছে...</p>";
 
-try {
+  try {
 
-const snapshot = await getDocs(collection(db,"doctor_guide"));
+    const snapshot = await getDocs(collection(db, "doctor_guide"));
 
-doctors = snapshot.docs.map(doc=>doc.data());
+    doctors = snapshot.docs.map(doc => doc.data());
 
-renderDoctors(doctors);
+    renderDoctors(doctors);
 
-}
+  } catch (error) {
 
-catch(error){
+    console.error(error);
 
-console.error(error);
+    doctorList.innerHTML = "<p>ডাটা লোড করা যায়নি।</p>";
 
-doctorList.innerHTML="<p>ডাটা লোড করা যায়নি।</p>";
-
-}
+  }
 
 }
 
-function renderDoctors(data){
+// Doctor Card দেখানো
+function renderDoctors(data) {
 
-if(data.length===0){
+  if (data.length === 0) {
 
-doctorList.innerHTML="<p>কোন তথ্য পাওয়া যায়নি।</p>";
+    doctorList.innerHTML = "<p>কোনো তথ্য পাওয়া যায়নি।</p>";
 
-return;
+    return;
+
+  }
+
+  doctorList.innerHTML = "";
+
+  data.forEach(item => {
+
+    doctorList.innerHTML += `
+
+      <div class="card">
+
+        <h2>${item.disease}</h2>
+
+        <p><strong>🏥 বিভাগ:</strong> ${item.department}</p>
+
+        <p><strong>👨‍⚕️ ডাক্তার:</strong> ${item.doctor}</p>
+
+        <p><strong>🤒 লক্ষণ:</strong> ${item.symptoms}</p>
+
+        <p>${item.description}</p>
+
+        <a href="doctor-details.html?slug=${item.slug}">
+          <button class="details-btn">
+            বিস্তারিত দেখুন
+          </button>
+        </a>
+
+      </div>
+
+    `;
+
+  });
 
 }
 
-doctorList.innerHTML += `
+// সার্চ
+searchInput.addEventListener("input", () => {
 
-<div class="card">
+  const keyword = searchInput.value.toLowerCase().trim();
 
-<h2>${item.disease}</h2>
+  const filtered = doctors.filter(item => {
 
-<p><strong>🏥 বিভাগ:</strong> ${item.department}</p>
+    return (
 
-<p><strong>👨‍⚕️ ডাক্তার:</strong> ${item.doctor}</p>
+      (item.disease || "").toLowerCase().includes(keyword) ||
+      (item.department || "").toLowerCase().includes(keyword) ||
+      (item.doctor || "").toLowerCase().includes(keyword) ||
+      (item.symptoms || "").toLowerCase().includes(keyword) ||
+      (item.keywords || "").toLowerCase().includes(keyword)
 
-<p><strong>🤒 লক্ষণ:</strong> ${item.symptoms}</p>
+    );
 
-<p>${item.description}</p>
+  });
 
-<a href="doctor-details.html?slug=${item.slug}">
-  <button class="details-btn">
-    বিস্তারিত দেখুন
-  </button>
-</a>
-
-</div>
-
-`;
-
-});
-
-}
-
-searchInput.addEventListener("input",()=>{
-
-const keyword=searchInput.value.toLowerCase().trim();
-
-const filtered=doctors.filter(item=>{
-
-return(
-
-(item.disease||"").toLowerCase().includes(keyword)||
-
-(item.department||"").toLowerCase().includes(keyword)||
-
-(item.doctor||"").toLowerCase().includes(keyword)||
-
-(item.symptoms||"").toLowerCase().includes(keyword)||
-
-(item.keywords||"").toLowerCase().includes(keyword)
-
-);
-
-});
-
-renderDoctors(filtered);
+  renderDoctors(filtered);
 
 });
 
