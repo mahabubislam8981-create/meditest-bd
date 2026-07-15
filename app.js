@@ -27,7 +27,28 @@ if (selectedCategory) {
 } else {
   renderTests(tests);
 }
+function renderPopularTests() {
 
+  const popular = tests.filter(test => test.popular === true);
+
+  if (popular.length === 0) {
+    popularTests.innerHTML = "<p>কোনো জনপ্রিয় টেস্ট নেই।</p>";
+    return;
+  }
+
+  popularTests.innerHTML = "";
+
+  popular.forEach(test => {
+
+    popularTests.innerHTML += `
+      <a href="test.html?slug=${test.slug}" class="details-btn" style="display:block;margin-bottom:10px;text-align:center;text-decoration:none;">
+        🔥 ${test.name}
+      </a>
+    `;
+
+  });
+
+}
   } catch (error) {
     console.error(error);
     testList.innerHTML = "<p>ডাটা লোড করা যায়নি।</p>";
