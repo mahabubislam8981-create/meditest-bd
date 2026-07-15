@@ -185,3 +185,13 @@ footer{
 }
 
 }
+#popularTests{
+    display:flex;
+    flex-wrap:wrap;
+    gap:10px;
+}
+
+#popularTests a{
+    flex:1 1 180px;
+    text-align:center;
+}
