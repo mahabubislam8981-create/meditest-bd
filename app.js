@@ -7,33 +7,66 @@ const searchInput = document.getElementById("searchInput");
 
 let tests = [];
 
+// ==============================
 // সব টেস্ট লোড
+// ==============================
 async function loadTests() {
+
   testList.innerHTML = "<p>লোড হচ্ছে...</p>";
 
   try {
+
     const snapshot = await getDocs(collection(db, "tests"));
 
     tests = snapshot.docs.map(doc => doc.data());
 
-    const params = new URLSearchParams(window.location.search);
-const selectedCategory = params.get("category");
+    // জনপ্রিয় টেস্ট দেখাও
+    renderPopularTests();
 
-if (selectedCategory) {
-  const filtered = tests.filter(
-    test => test.category === selectedCategory
-  );
-  renderTests(filtered);
-} else {
-  renderTests(tests);
+    // Category Filter
+    const params = new URLSearchParams(window.location.search);
+    const selectedCategory = params.get("category");
+
+    if (selectedCategory) {
+
+      const filtered = tests.filter(
+        test => test.category === selectedCategory
+      );
+
+      renderTests(filtered);
+
+    } else {
+
+      renderTests(tests);
+
+    }
+
+  } catch (error) {
+
+    console.error(error);
+
+    testList.innerHTML = "<p>ডাটা লোড করা যায়নি।</p>";
+
+  }
+
 }
+
+// ==============================
+// জনপ্রিয় টেস্ট
+// ==============================
 function renderPopularTests() {
+
+  if (!popularTests) return;
 
   const popular = tests.filter(test => test.popular === true);
 
   if (popular.length === 0) {
-    popularTests.innerHTML = "<p>কোনো জনপ্রিয় টেস্ট নেই।</p>";
+
+    popularTests.innerHTML =
+      "<p>কোনো জনপ্রিয় টেস্ট নেই।</p>";
+
     return;
+
   }
 
   popularTests.innerHTML = "";
@@ -41,26 +74,29 @@ function renderPopularTests() {
   popular.forEach(test => {
 
     popularTests.innerHTML += `
-      <a href="test.html?slug=${test.slug}" class="details-btn" style="display:block;margin-bottom:10px;text-align:center;text-decoration:none;">
-        🔥 ${test.name}
+      <a href="test.html?slug=${test.slug}"
+         class="details-btn"
+         style="display:block;margin-bottom:10px;text-align:center;text-decoration:none;">
+         🔥 ${test.name}
       </a>
     `;
 
   });
 
 }
-  } catch (error) {
-    console.error(error);
-    testList.innerHTML = "<p>ডাটা লোড করা যায়নি।</p>";
-  }
-}
 
-// টেস্ট কার্ড দেখানো
+// ==============================
+// সব টেস্ট কার্ড
+// ==============================
 function renderTests(data) {
 
   if (data.length === 0) {
-    testList.innerHTML = "<p>কোনো তথ্য পাওয়া যায়নি।</p>";
+
+    testList.innerHTML =
+      "<p>কোনো তথ্য পাওয়া যায়নি।</p>";
+
     return;
+
   }
 
   testList.innerHTML = "";
@@ -78,7 +114,7 @@ function renderTests(data) {
         </p>
 
         <div class="price">
-          ৳${test.price}
+          ৳${test.price || ""}
         </div>
 
         <a href="test.html?slug=${test.slug}">
@@ -94,7 +130,9 @@ function renderTests(data) {
 
 }
 
+// ==============================
 // সার্চ
+// ==============================
 searchInput.addEventListener("input", () => {
 
   const keyword = searchInput.value.trim().toLowerCase();
@@ -118,8 +156,9 @@ searchInput.addEventListener("input", () => {
   });
 
   renderTests(filtered);
-  renderPopularTests();
 
 });
+
+// ==============================
 
 loadTests();
