@@ -4,12 +4,13 @@ import { collection, getDocs } from "https://www.gstatic.com/firebasejs/12.0.0/f
 const testList = document.getElementById("testList");
 const popularTests = document.getElementById("popularTests");
 const searchInput = document.getElementById("searchInput");
+const searchSuggestions = document.getElementById("searchSuggestions");
 
 let tests = [];
 
-// ==============================
+// ==========================
 // সব টেস্ট লোড
-// ==============================
+// ==========================
 async function loadTests() {
 
   testList.innerHTML = "<p>লোড হচ্ছে...</p>";
@@ -20,10 +21,8 @@ async function loadTests() {
 
     tests = snapshot.docs.map(doc => doc.data());
 
-    // জনপ্রিয় টেস্ট দেখাও
     renderPopularTests();
 
-    // Category Filter
     const params = new URLSearchParams(window.location.search);
     const selectedCategory = params.get("category");
 
@@ -51,9 +50,9 @@ async function loadTests() {
 
 }
 
-// ==============================
+// ==========================
 // জনপ্রিয় টেস্ট
-// ==============================
+// ==========================
 function renderPopularTests() {
 
   if (!popularTests) return;
@@ -75,9 +74,9 @@ function renderPopularTests() {
 
     popularTests.innerHTML += `
       <a href="test.html?slug=${test.slug}"
-         class="details-btn"
-         style="display:block;margin-bottom:10px;text-align:center;text-decoration:none;">
-         🔥 ${test.name}
+      class="details-btn"
+      style="display:block;margin-bottom:10px;text-decoration:none;text-align:center;">
+      🔥 ${test.name}
       </a>
     `;
 
@@ -85,15 +84,15 @@ function renderPopularTests() {
 
 }
 
-// ==============================
-// সব টেস্ট কার্ড
-// ==============================
+// ==========================
+// টেস্ট কার্ড
+// ==========================
 function renderTests(data) {
 
   if (data.length === 0) {
 
     testList.innerHTML =
-      "<p>কোনো তথ্য পাওয়া যায়নি।</p>";
+      "<p>❌ কোনো তথ্য পাওয়া যায়নি।</p>";
 
     return;
 
@@ -104,38 +103,53 @@ function renderTests(data) {
   data.forEach(test => {
 
     testList.innerHTML += `
-      <div class="card">
 
-        <h2>${test.name}</h2>
+    <div class="card">
 
-        <p>
-          <strong>বিভাগ:</strong>
-          ${test.category || "তথ্য নেই"}
-        </p>
+      <h2>${test.name}</h2>
 
-        <div class="price">
-          ৳${test.price || ""}
-        </div>
+      <p>
+      <strong>বিভাগ:</strong>
+      ${test.category || "তথ্য নেই"}
+      </p>
 
-        <a href="test.html?slug=${test.slug}">
-          <button class="details-btn">
-            বিস্তারিত দেখুন
-          </button>
-        </a>
-
+      <div class="price">
+      ৳${test.price || "-"}
       </div>
+
+      <a href="test.html?slug=${test.slug}">
+
+      <button class="details-btn">
+
+      বিস্তারিত দেখুন
+
+      </button>
+
+      </a>
+
+    </div>
+
     `;
 
   });
 
 }
 
-// ==============================
-// সার্চ
-// ==============================
-searchInput.addEventListener("input", () => {
+// ==========================
+// Live Search Suggestions
+// ==========================
+function showSuggestions(keyword) {
 
-  const keyword = searchInput.value.trim().toLowerCase();
+  if (!searchSuggestions) return;
+
+  if (keyword === "") {
+
+    searchSuggestions.style.display = "none";
+    searchSuggestions.innerHTML = "";
+
+    return;
+
+  }
 
   const filtered = tests.filter(test => {
 
@@ -146,11 +160,87 @@ searchInput.addEventListener("input", () => {
     const purpose = (test.purpose || "").toLowerCase();
 
     return (
+
       name.includes(keyword) ||
+
       category.includes(keyword) ||
+
       keywords.includes(keyword) ||
+
       description.includes(keyword) ||
+
       purpose.includes(keyword)
+
+    );
+
+  }).slice(0,8);
+
+  if (filtered.length === 0) {
+
+    searchSuggestions.style.display = "none";
+
+    searchSuggestions.innerHTML = "";
+
+    return;
+
+  }
+
+  searchSuggestions.innerHTML = "";
+
+  filtered.forEach(test => {
+
+    searchSuggestions.innerHTML += `
+
+    <div class="search-item">
+
+      <a href="test.html?slug=${test.slug}"
+      style="text-decoration:none;color:#222;display:block;">
+
+      <strong>${test.name}</strong><br>
+
+      <small>${test.category || ""}</small>
+
+      </a>
+
+    </div>
+
+    `;
+
+  });
+
+  searchSuggestions.style.display = "block";
+
+}
+
+// ==========================
+// Search
+// ==========================
+searchInput.addEventListener("input", () => {
+
+  const keyword = searchInput.value.trim().toLowerCase();
+
+  showSuggestions(keyword);
+
+  const filtered = tests.filter(test => {
+
+    const name = (test.name || "").toLowerCase();
+    const category = (test.category || "").toLowerCase();
+    const keywords = (test.keywords || "").toLowerCase();
+    const description = (test.description || "").toLowerCase();
+    const purpose = (test.purpose || "").toLowerCase();
+
+    return (
+
+      name.includes(keyword) ||
+
+      category.includes(keyword) ||
+
+      keywords.includes(keyword) ||
+
+      description.includes(keyword) ||
+
+      purpose.includes(keyword)
+
     );
 
   });
@@ -159,6 +249,23 @@ searchInput.addEventListener("input", () => {
 
 });
 
-// ==============================
+// ==========================
+// Suggestions Hide
+// ==========================
+document.addEventListener("click", (e)=>{
+
+  if(!e.target.closest(".search-box")){
+
+    if(searchSuggestions){
+
+      searchSuggestions.style.display="none";
+
+    }
+
+  }
+
+});
+
+// ==========================
 
 loadTests();
