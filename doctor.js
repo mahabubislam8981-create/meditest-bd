@@ -1,3 +1,5 @@
+console.log("Doctor JS Version: 1.0");
+console.log("Time:", new Date().toISOString());
 import { db } from "./firebase.js";
 import {
   collection,
