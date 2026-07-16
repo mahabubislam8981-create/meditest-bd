@@ -87,3 +87,19 @@ function renderPopular(list) {
 searchInput.addEventListener("input", e => {
 
   const text = e.target.value
+import { db } from "./firebase.js";
+import { collection, getDocs } from "https://www.gstatic.com/firebasejs/12.0.0/firebase-firestore.js";
+
+async function test() {
+  const snapshot = await getDocs(collection(db, "doctor_guide"));
+
+  console.log(snapshot.docs);
+
+  snapshot.docs.forEach(doc => {
+    console.log(doc.id, doc.data());
+  });
+
+  alert("Documents = " + snapshot.docs.length);
+}
+
+test();
