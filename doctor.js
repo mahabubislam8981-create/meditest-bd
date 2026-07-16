@@ -18,12 +18,17 @@ async function loadDoctors() {
 
     const snapshot = await getDocs(collection(db, "doctor_guide"));
 
-    doctors = snapshot.docs.map(doc => ({
-      id: doc.id,
-      ...doc.data()
-    }));
+    console.log("Documents:", snapshot.size);
 
-    renderDoctors(doctors);
+snapshot.forEach(doc => {
+  console.log(doc.id, doc.data());
+});
+
+doctorList.innerHTML = `
+  <div class="card">
+    <h2>Documents: ${snapshot.size}</h2>
+  </div>
+`;
 
   } catch (error) {
 
