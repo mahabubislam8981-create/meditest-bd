@@ -1,7 +1,10 @@
 import { db } from "./firebase.js";
+console.log("Doctor JS Loaded");
 import {
   collection,
   getDocs
+  console.log(snapshot.size);
+console.log(snapshot.docs.map(doc => doc.data()));
 } from "https://www.gstatic.com/firebasejs/12.0.0/firebase-firestore.js";
 
 const doctorList = document.getElementById("doctorList");
@@ -120,4 +123,5 @@ searchInput.addEventListener("input", function () {
 });
 
 // শুরু
+console.log("Loading doctors...");
 loadDoctors();
