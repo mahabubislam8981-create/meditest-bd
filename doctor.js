@@ -14,55 +14,54 @@ let doctors = [];
 async function loadDoctors() {
 
   doctorList.innerHTML = "<p>লোড হচ্ছে...</p>";
-  popularDiseases.innerHTML = "<p>লোড হচ্ছে...</p>";
 
   try {
 
     const snapshot = await getDocs(collection(db, "doctor_guide"));
-console.log("Snapshot size:", snapshot.size);
 
-snapshot.forEach(doc => {
-  console.log(doc.id, doc.data());
-});
+    console.log("Documents:", snapshot.size);
 
-snapshot.forEach(doc => {
-  console.log(doc.id, doc.data());
-});
-    
-    doctors = snapshot.docs.map(doc => 
-      console.log("Doctors Array:", doctors);
-      ({
+    doctors = snapshot.docs.map(doc => ({
       id: doc.id,
       ...doc.data()
     }));
 
+    console.log(doctors);
+
     renderDoctors(doctors);
-    renderPopularDoctors();
+    renderPopularDiseases();
 
   } catch (error) {
 
     console.error(error);
 
-    doctorList.innerHTML =
-      "<p>❌ ডাটা লোড করা যায়নি।</p>";
+    doctorList.innerHTML = `
+      <div class="card">
+        <h3>❌ ডাটা লোড করা যায়নি</h3>
+        <p>${error.message}</p>
+      </div>
+    `;
 
   }
 
 }
 
-// সব রোগ দেখানো
+// Doctor Card
 function renderDoctors(data) {
+
+  doctorList.innerHTML = "";
 
   if (data.length === 0) {
 
-    doctorList.innerHTML =
-      "<p>কোনো তথ্য পাওয়া যায়নি।</p>";
+    doctorList.innerHTML = `
+      <div class="card">
+        <h3>কোনো তথ্য পাওয়া যায়নি।</h3>
+      </div>
+    `;
 
     return;
 
   }
-
-  doctorList.innerHTML = "";
 
   data.forEach(item => {
 
@@ -70,24 +69,21 @@ function renderDoctors(data) {
 
       <div class="card">
 
-      <h2>${item.disease}</h2>
+        <h2>${item.disease || ""}</h2>
 
-      <p><strong>🏥 বিভাগ:</strong>
-      ${item.department}</p>
+        <p><strong>🏥 বিভাগ:</strong> ${item.department || ""}</p>
 
-      <p><strong>👨‍⚕️ ডাক্তার:</strong>
-      ${item.doctor}</p>
+        <p><strong>👨‍⚕️ ডাক্তার:</strong> ${item.doctor || ""}</p>
 
-      <p><strong>🤒 লক্ষণ:</strong>
-      ${item.symptoms}</p>
+        <p><strong>🤒 লক্ষণ:</strong> ${item.symptoms || ""}</p>
 
-      <p>${item.description}</p>
+        <p>${item.description || ""}</p>
 
-      <a href="doctor-details.html?slug=${item.slug}">
-      <button class="details-btn">
-      বিস্তারিত দেখুন
-      </button>
-      </a>
+        <a href="doctor-details.html?slug=${item.slug}">
+          <button class="details-btn">
+            বিস্তারিত দেখুন
+          </button>
+        </a>
 
       </div>
 
@@ -98,14 +94,15 @@ function renderDoctors(data) {
 }
 
 // জনপ্রিয় রোগ
-function renderPopularDoctors() {
+function renderPopularDiseases() {
+
+  if (!popularDiseases) return;
 
   const popular = doctors.filter(item => item.popular === true);
 
   if (popular.length === 0) {
 
-    popularDiseases.innerHTML =
-      "<p>কোনো জনপ্রিয় রোগ নেই।</p>";
+    popularDiseases.innerHTML = "<p>কোনো জনপ্রিয় রোগ নেই।</p>";
 
     return;
 
@@ -117,12 +114,11 @@ function renderPopularDoctors() {
 
     popularDiseases.innerHTML += `
 
-      <a
-      href="doctor-details.html?slug=${item.slug}"
-      class="details-btn"
-      style="display:block;margin-bottom:10px;text-decoration:none;text-align:center;">
+      <a href="doctor-details.html?slug=${item.slug}"
+         class="details-btn"
+         style="display:block;margin-bottom:10px;text-align:center;text-decoration:none;">
 
-      🔥 ${item.disease}
+         🔥 ${item.disease}
 
       </a>
 
@@ -133,67 +129,41 @@ function renderPopularDoctors() {
 }
 
 // Live Search
-searchInput.addEventListener("input", () => {
+searchInput.addEventListener("input", function () {
 
-  const keyword = searchInput.value
-  .trim()
-  .toLowerCase();
+  const keyword = this.value.trim().toLowerCase();
 
   if (keyword === "") {
-doctorList.innerHTML = `
-<div class="card">
-<h2>Documents: ${snapshot.size}</h2>
-<pre>${JSON.stringify(doctors, null, 2)}</pre>
-</div>
-`;
-return;
-    
+
     renderDoctors(doctors);
 
     return;
 
   }
 
-  const filtered = doctors.filter(item =>
+  const filtered = doctors.filter(item => {
 
-    (item.disease || "")
-    .toLowerCase()
-    .includes(keyword)
+    return (
 
-    ||
+      (item.disease || "").toLowerCase().includes(keyword) ||
 
-    (item.department || "")
-    .toLowerCase()
-    .includes(keyword)
+      (item.department || "").toLowerCase().includes(keyword) ||
 
-    ||
+      (item.doctor || "").toLowerCase().includes(keyword) ||
 
-    (item.doctor || "")
-    .toLowerCase()
-    .includes(keyword)
+      (item.symptoms || "").toLowerCase().includes(keyword) ||
 
-    ||
+      (item.description || "").toLowerCase().includes(keyword) ||
 
-    (item.symptoms || "")
-    .toLowerCase()
-    .includes(keyword)
+      (item.keywords || "").toLowerCase().includes(keyword)
 
-    ||
+    );
 
-    (item.description || "")
-    .toLowerCase()
-    .includes(keyword)
-
-    ||
-
-    (item.keywords || "")
-    .toLowerCase()
-    .includes(keyword)
-
-  );
+  });
 
   renderDoctors(filtered);
 
 });
 
+// Start
 loadDoctors();
