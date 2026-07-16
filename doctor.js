@@ -12,8 +12,14 @@ async function testConnection() {
 
     console.log("Project ID:", db.app.options.projectId);
 
-    const snapshot = await getDocs(collection(db, "tests"));
-alert("Tests = " + snapshot.size);
+    const snapshot = await getDocs(collection(db, "doctor_guide"));
+
+snapshot.forEach(doc => {
+  console.log(doc.id);
+  console.log(doc.data());
+});
+
+alert("doctor_guide = " + snapshot.size);
     
     snapshot.forEach(doc => {
       console.log(doc.id, doc.data());
