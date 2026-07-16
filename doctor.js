@@ -1,5 +1,3 @@
-console.log("Doctor JS Version: 1.0");
-console.log("Time:", new Date().toISOString());
 import { db } from "./firebase.js";
 import {
   collection,
@@ -7,54 +5,85 @@ import {
 } from "https://www.gstatic.com/firebasejs/12.0.0/firebase-firestore.js";
 
 const doctorList = document.getElementById("doctorList");
+const popularDiseases = document.getElementById("popularDiseases");
+const searchInput = document.getElementById("searchInput");
 
-async function testConnection() {
+let doctors = [];
 
+// সব ডাটা লোড
+async function loadDoctors() {
   try {
-
-    console.log("Project ID:", db.app.options.projectId);
-
     const snapshot = await getDocs(collection(db, "doctor_guide"));
 
-snapshot.forEach(doc => {
-  console.log(doc.id);
-  console.log(doc.data());
-});
+    doctors = snapshot.docs.map(doc => ({
+      id: doc.id,
+      ...doc.data()
+    }));
 
-alert("doctor_guide = " + snapshot.size);
-    
-    snapshot.forEach(doc => {
-      console.log(doc.id, doc.data());
-    });
+    renderDoctors(doctors);
+    renderPopular(doctors);
 
-    doctorList.innerHTML = `
-      <div class="card">
-        <h2>Project: ${db.app.options.projectId}</h2>
-        <h3>Documents: ${snapshot.size}</h3>
-      </div>
-    `;
+    console.log("Loaded:", doctors.length);
 
   } catch (err) {
+    console.error(err);
 
     doctorList.innerHTML = `
       <div class="card">
-        <h2>❌ ${err.message}</h2>
+        <h3>❌ Firestore Error</h3>
+        <p>${err.message}</p>
       </div>
     `;
-
-    console.error(err);
-
   }
-
 }
 
-testConnection();
-const snapshot = await getDocs(collection(db, "doctor_guide"));
+// সব রোগ দেখানো
+function renderDoctors(list) {
 
-console.log("Size:", snapshot.size);
+  if (list.length === 0) {
+    doctorList.innerHTML = `
+      <div class="card">
+        <h3>কোন তথ্য পাওয়া যায়নি</h3>
+      </div>
+    `;
+    return;
+  }
 
-snapshot.forEach(doc => {
-  console.log(doc.id, doc.data());
-});
+  doctorList.innerHTML = list.map(item => `
+    <div class="card">
+      <h2>${item.disease || ""}</h2>
 
-alert("Documents = " + snapshot.size);
+      <p><b>👨‍⚕️ ডাক্তার:</b> ${item.doctor || ""}</p>
+
+      <p><b>🏥 বিভাগ:</b> ${item.department || ""}</p>
+
+      <p>${item.description || ""}</p>
+
+      <p><b>লক্ষণ:</b> ${item.symptoms || ""}</p>
+
+      <p><b>পরামর্শ:</b> ${item.note || ""}</p>
+    </div>
+  `).join("");
+}
+
+// জনপ্রিয় রোগ
+function renderPopular(list) {
+
+  const popular = list.filter(item => item.popular === true);
+
+  if (popular.length === 0) {
+    popularDiseases.innerHTML = "<p>কোন জনপ্রিয় রোগ নেই</p>";
+    return;
+  }
+
+  popularDiseases.innerHTML = popular.map(item => `
+    <div class="card">
+      <b>${item.disease}</b>
+    </div>
+  `).join("");
+}
+
+// সার্চ
+searchInput.addEventListener("input", e => {
+
+  const text = e.target.value
