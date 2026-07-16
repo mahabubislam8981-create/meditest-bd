@@ -42,3 +42,12 @@ async function testConnection() {
 }
 
 testConnection();
+const snapshot = await getDocs(collection(db, "doctor_guide"));
+
+console.log("Size:", snapshot.size);
+
+snapshot.forEach(doc => {
+  console.log(doc.id, doc.data());
+});
+
+alert("Documents = " + snapshot.size);
