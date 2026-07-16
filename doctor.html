@@ -7,6 +7,8 @@
 
 <title>Doctor Guide | MediTest BD</title>
 
+<meta name="description" content="কোন রোগের জন্য কোন বিভাগের ডাক্তার দেখাবেন">
+
 <link rel="stylesheet" href="style.css">
 
 </head>
@@ -21,15 +23,6 @@
 
 <p>কোন রোগের জন্য কোন বিভাগের ডাক্তার দেখাবেন</p>
 
-<div class="search-box">
-
-<input
-type="text"
-id="searchInput"
-placeholder="🔍 রোগের নাম লিখুন...">
-
-</div>
-
 </header>
 
 <nav class="navbar">
@@ -40,9 +33,42 @@ placeholder="🔍 রোগের নাম লিখুন...">
 
 <a href="doctor.html">🩺 Doctor Guide</a>
 
+<a href="about.html">ℹ️ About</a>
+
 </nav>
 
 <main>
+
+<!-- Search Box -->
+
+<section class="card">
+
+<h2>🔍 রোগ খুঁজুন</h2>
+
+<input
+type="text"
+id="searchInput"
+placeholder="রোগ, বিভাগ বা লক্ষণ লিখুন...">
+
+</section>
+
+<!-- Popular Diseases -->
+
+<section class="card">
+
+<h2>🔥 জনপ্রিয় রোগ</h2>
+
+<div id="popularDiseases">
+
+<p>লোড হচ্ছে...</p>
+
+</div>
+
+</section>
+
+<!-- Doctor Guide List -->
+
+<section>
 
 <div id="doctorList">
 
@@ -50,17 +76,24 @@ placeholder="🔍 রোগের নাম লিখুন...">
 
 </div>
 
+</section>
+
 </main>
 
 <footer>
 
+<div class="footer-text">
+
 <p><strong>MediTest BD</strong></p>
+
+<p>বাংলাদেশের স্বাস্থ্য তথ্যভাণ্ডার</p>
 
 <p>© 2026 All Rights Reserved.</p>
 
+</div>
+
 </footer>
 
-<script type="module" src="firebase.js"></script>
 <script type="module" src="doctor.js"></script>
 
 </body>
