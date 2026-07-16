@@ -9,7 +9,7 @@ const searchInput = document.getElementById("searchInput");
 
 let doctors = [];
 
-// সব Doctor Guide লোড
+// Doctor Guide লোড
 async function loadDoctors() {
 
   doctorList.innerHTML = "<p>লোড হচ্ছে...</p>";
@@ -18,72 +18,59 @@ async function loadDoctors() {
 
     const snapshot = await getDocs(collection(db, "doctor_guide"));
 
-    console.log("Documents:", snapshot.size);
-
     doctors = snapshot.docs.map(doc => ({
       id: doc.id,
       ...doc.data()
     }));
 
-    console.log(doctors);
-
     renderDoctors(doctors);
 
   } catch (error) {
 
-    console.error(error);
+    console.error("Firestore Error:", error);
 
     doctorList.innerHTML = `
-      <p style="color:red;">
-        ❌ ডাটা লোড করা যায়নি।
-      </p>
+      <div class="card">
+        <h3>❌ ডাটা লোড করা যায়নি</h3>
+        <p>${error.message}</p>
+      </div>
     `;
 
   }
 
 }
 
-// Doctor Card দেখানো
-function renderDoctors(data) {
+// Card দেখানো
+function renderDoctors(list) {
 
   doctorList.innerHTML = "";
 
-  if (!data || data.length === 0) {
+  if (!list || list.length === 0) {
 
     doctorList.innerHTML = `
-      <p>কোনো তথ্য পাওয়া যায়নি।</p>
+      <div class="card">
+        <h3>কোনো তথ্য পাওয়া যায়নি</h3>
+      </div>
     `;
 
     return;
 
   }
 
-  data.forEach(item => {
+  list.forEach(item => {
 
     doctorList.innerHTML += `
-
       <div class="card">
 
-        <h2>${item.disease || "-"}</h2>
+        <h2>${item.disease || "রোগের নাম নেই"}</h2>
 
-        <p>
-          <strong>🏥 বিভাগ:</strong>
-          ${item.department || "-"}
-        </p>
+        <p><strong>🏥 বিভাগ:</strong> ${item.department || "-"}</p>
 
-        <p>
-          <strong>👨‍⚕️ বিশেষজ্ঞ:</strong>
-          ${item.doctor || "-"}
-        </p>
+        <p><strong>👨‍⚕️ ডাক্তার:</strong> ${item.doctor || "-"}</p>
 
-        <p>
-          <strong>🤒 লক্ষণ:</strong>
-          ${item.symptoms || "-"}
-        </p>
+        <p><strong>🤒 লক্ষণ:</strong> ${item.symptoms || "-"}</p>
 
-        <p>
-          ${item.description || ""}
-        </p>
+        <p>${item.description || ""}</p>
 
         <a href="doctor-details.html?slug=${item.slug}">
           <button class="details-btn">
@@ -92,7 +79,6 @@ function renderDoctors(data) {
         </a>
 
       </div>
-
     `;
 
   });
@@ -100,9 +86,14 @@ function renderDoctors(data) {
 }
 
 // Live Search
-searchInput.addEventListener("input", () => {
+searchInput.addEventListener("input", function () {
 
-  const keyword = searchInput.value.trim().toLowerCase();
+  const keyword = this.value.trim().toLowerCase();
+
+  if (keyword === "") {
+    renderDoctors(doctors);
+    return;
+  }
 
   const filtered = doctors.filter(item => {
 
@@ -112,6 +103,7 @@ searchInput.addEventListener("input", () => {
       (item.department || "").toLowerCase().includes(keyword) ||
       (item.doctor || "").toLowerCase().includes(keyword) ||
       (item.symptoms || "").toLowerCase().includes(keyword) ||
+      (item.description || "").toLowerCase().includes(keyword) ||
       (item.keywords || "").toLowerCase().includes(keyword)
 
     );
@@ -122,4 +114,5 @@ searchInput.addEventListener("input", () => {
 
 });
 
+// শুরু
 loadDoctors();
