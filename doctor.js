@@ -136,7 +136,14 @@ searchInput.addEventListener("input", () => {
   .toLowerCase();
 
   if (keyword === "") {
-
+doctorList.innerHTML = `
+<div class="card">
+<h2>Documents: ${snapshot.size}</h2>
+<pre>${JSON.stringify(doctors, null, 2)}</pre>
+</div>
+`;
+return;
+    
     renderDoctors(doctors);
 
     return;
