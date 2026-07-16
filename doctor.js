@@ -19,7 +19,12 @@ async function loadDoctors() {
   try {
 
     const snapshot = await getDocs(collection(db, "doctor_guide"));
+console.log("Snapshot size:", snapshot.size);
 
+snapshot.forEach(doc => {
+  console.log(doc.id, doc.data());
+});
+    
     doctors = snapshot.docs.map(doc => ({
       id: doc.id,
       ...doc.data()
