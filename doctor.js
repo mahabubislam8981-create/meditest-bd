@@ -10,32 +10,28 @@ async function testConnection() {
 
   try {
 
+    console.log("Project ID:", db.app.options.projectId);
+
     const snapshot = await getDocs(collection(db, "doctor_guide"));
+
+    console.log("Documents:", snapshot.size);
+
+    snapshot.forEach(doc => {
+      console.log(doc.id, doc.data());
+    });
 
     doctorList.innerHTML = `
       <div class="card">
-        <h2>Firestore Connected ✅</h2>
-        <p>Documents: ${snapshot.size}</p>
+        <h2>Project: ${db.app.options.projectId}</h2>
+        <h3>Documents: ${snapshot.size}</h3>
       </div>
     `;
-
-    snapshot.forEach(doc => {
-
-      doctorList.innerHTML += `
-        <div class="card">
-          <h3>${doc.id}</h3>
-          <pre>${JSON.stringify(doc.data(), null, 2)}</pre>
-        </div>
-      `;
-
-    });
 
   } catch (err) {
 
     doctorList.innerHTML = `
       <div class="card">
-        <h2>❌ Firestore Error</h2>
-        <pre>${err.message}</pre>
+        <h2>❌ ${err.message}</h2>
       </div>
     `;
 
