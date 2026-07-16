@@ -1,10 +1,7 @@
 import { db } from "./firebase.js";
-console.log("Doctor JS Loaded");
 import {
   collection,
   getDocs
-  console.log(snapshot.size);
-console.log(snapshot.docs.map(doc => doc.data()));
 } from "https://www.gstatic.com/firebasejs/12.0.0/firebase-firestore.js";
 
 const doctorList = document.getElementById("doctorList");
@@ -12,7 +9,6 @@ const searchInput = document.getElementById("searchInput");
 
 let doctors = [];
 
-// Doctor Guide লোড
 async function loadDoctors() {
 
   doctorList.innerHTML = "<p>লোড হচ্ছে...</p>";
@@ -23,23 +19,19 @@ async function loadDoctors() {
 
     console.log("Documents:", snapshot.size);
 
-snapshot.forEach(doc => {
-  console.log(doc.id, doc.data());
-});
+    doctors = snapshot.docs.map(doc => doc.data());
 
-doctorList.innerHTML = `
-  <div class="card">
-    <h2>Documents: ${snapshot.size}</h2>
-  </div>
-`;
+    console.log(doctors);
+
+    renderDoctors(doctors);
 
   } catch (error) {
 
-    console.error("Firestore Error:", error);
+    console.error(error);
 
     doctorList.innerHTML = `
       <div class="card">
-        <h3>❌ ডাটা লোড করা যায়নি</h3>
+        <h3>❌ Firestore Error</h3>
         <p>${error.message}</p>
       </div>
     `;
@@ -48,21 +40,19 @@ doctorList.innerHTML = `
 
 }
 
-// Card দেখানো
 function renderDoctors(list) {
 
   doctorList.innerHTML = "";
 
-  if (!list || list.length === 0) {
+  if (list.length === 0) {
 
     doctorList.innerHTML = `
       <div class="card">
-        <h3>কোনো তথ্য পাওয়া যায়নি</h3>
+        <h3>কোনো তথ্য পাওয়া যায়নি</h3>
       </div>
     `;
 
     return;
-
   }
 
   list.forEach(item => {
@@ -70,15 +60,15 @@ function renderDoctors(list) {
     doctorList.innerHTML += `
       <div class="card">
 
-        <h2>${item.disease || "রোগের নাম নেই"}</h2>
+        <h2>${item.disease}</h2>
 
-        <p><strong>🏥 বিভাগ:</strong> ${item.department || "-"}</p>
+        <p><strong>🏥 বিভাগ:</strong> ${item.department}</p>
 
-        <p><strong>👨‍⚕️ ডাক্তার:</strong> ${item.doctor || "-"}</p>
+        <p><strong>👨‍⚕️ ডাক্তার:</strong> ${item.doctor}</p>
 
-        <p><strong>🤒 লক্ষণ:</strong> ${item.symptoms || "-"}</p>
+        <p><strong>🤒 লক্ষণ:</strong> ${item.symptoms}</p>
 
-        <p>${item.description || ""}</p>
+        <p>${item.description}</p>
 
         <a href="doctor-details.html?slug=${item.slug}">
           <button class="details-btn">
@@ -93,35 +83,23 @@ function renderDoctors(list) {
 
 }
 
-// Live Search
-searchInput.addEventListener("input", function () {
+searchInput.addEventListener("input", () => {
 
-  const keyword = this.value.trim().toLowerCase();
+  const keyword = searchInput.value.trim().toLowerCase();
 
-  if (keyword === "") {
-    renderDoctors(doctors);
-    return;
-  }
+  const filtered = doctors.filter(item =>
 
-  const filtered = doctors.filter(item => {
+    (item.disease || "").toLowerCase().includes(keyword) ||
+    (item.department || "").toLowerCase().includes(keyword) ||
+    (item.doctor || "").toLowerCase().includes(keyword) ||
+    (item.symptoms || "").toLowerCase().includes(keyword) ||
+    (item.description || "").toLowerCase().includes(keyword) ||
+    (item.keywords || "").toLowerCase().includes(keyword)
 
-    return (
-
-      (item.disease || "").toLowerCase().includes(keyword) ||
-      (item.department || "").toLowerCase().includes(keyword) ||
-      (item.doctor || "").toLowerCase().includes(keyword) ||
-      (item.symptoms || "").toLowerCase().includes(keyword) ||
-      (item.description || "").toLowerCase().includes(keyword) ||
-      (item.keywords || "").toLowerCase().includes(keyword)
-
-    );
-
-  });
+  );
 
   renderDoctors(filtered);
 
 });
 
-// শুরু
-console.log("Loading doctors...");
 loadDoctors();
