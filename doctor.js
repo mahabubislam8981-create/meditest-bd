@@ -18,17 +18,26 @@ async function loadDoctors() {
 
     const snapshot = await getDocs(collection(db, "doctor_guide"));
 
-    doctors = snapshot.docs.map(doc => doc.data());
-console.log(snapshot.size);
-console.log(doctors);
-    
+    console.log("Documents:", snapshot.size);
+
+    doctors = snapshot.docs.map(doc => ({
+      id: doc.id,
+      ...doc.data()
+    }));
+
+    console.log(doctors);
+
     renderDoctors(doctors);
 
   } catch (error) {
 
     console.error(error);
 
-    doctorList.innerHTML = "<p>ডাটা লোড করা যায়নি।</p>";
+    doctorList.innerHTML = `
+      <p style="color:red;">
+        ❌ ডাটা লোড করা যায়নি।
+      </p>
+    `;
 
   }
 
@@ -37,15 +46,17 @@ console.log(doctors);
 // Doctor Card দেখানো
 function renderDoctors(data) {
 
-  if (data.length === 0) {
+  doctorList.innerHTML = "";
 
-    doctorList.innerHTML = "<p>কোনো তথ্য পাওয়া যায়নি।</p>";
+  if (!data || data.length === 0) {
+
+    doctorList.innerHTML = `
+      <p>কোনো তথ্য পাওয়া যায়নি।</p>
+    `;
 
     return;
 
   }
-
-  doctorList.innerHTML = "";
 
   data.forEach(item => {
 
@@ -53,15 +64,26 @@ function renderDoctors(data) {
 
       <div class="card">
 
-        <h2>${item.disease}</h2>
+        <h2>${item.disease || "-"}</h2>
 
-        <p><strong>🏥 বিভাগ:</strong> ${item.department}</p>
+        <p>
+          <strong>🏥 বিভাগ:</strong>
+          ${item.department || "-"}
+        </p>
 
-        <p><strong>👨‍⚕️ ডাক্তার:</strong> ${item.doctor}</p>
+        <p>
+          <strong>👨‍⚕️ বিশেষজ্ঞ:</strong>
+          ${item.doctor || "-"}
+        </p>
 
-        <p><strong>🤒 লক্ষণ:</strong> ${item.symptoms}</p>
+        <p>
+          <strong>🤒 লক্ষণ:</strong>
+          ${item.symptoms || "-"}
+        </p>
 
-        <p>${item.description}</p>
+        <p>
+          ${item.description || ""}
+        </p>
 
         <a href="doctor-details.html?slug=${item.slug}">
           <button class="details-btn">
@@ -77,10 +99,10 @@ function renderDoctors(data) {
 
 }
 
-// সার্চ
+// Live Search
 searchInput.addEventListener("input", () => {
 
-  const keyword = searchInput.value.toLowerCase().trim();
+  const keyword = searchInput.value.trim().toLowerCase();
 
   const filtered = doctors.filter(item => {
 
