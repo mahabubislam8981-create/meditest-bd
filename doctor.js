@@ -19,7 +19,9 @@ async function loadDoctors() {
     const snapshot = await getDocs(collection(db, "doctor_guide"));
 
     doctors = snapshot.docs.map(doc => doc.data());
-
+console.log(snapshot.size);
+console.log(doctors);
+    
     renderDoctors(doctors);
 
   } catch (error) {
